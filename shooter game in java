@@ -1,0 +1,105 @@
+var back=createSprite(200,200);
+back.setAnimation("space_1");
+var player = createSprite(200,350);
+player.setAnimation("playerShip3_red_1");
+var enemy=createSprite(200,50);
+enemy.setAnimation("enemyBlue1_1");
+enemy.velocityX=5;
+var bullet=createSprite(500,player.y);
+bullet.setAnimation("animation_2");
+var score=0;
+var life=3;
+var gold=createSprite(randomNumber(10,350),-10);
+gold.setAnimation("coin_gold_1");
+gold.velocityY=15;
+gold.scale=0.5;
+var enemybt=createSprite(enemy.x,enemy.y+40);
+enemybt.setAnimation("animation_3");
+enemybt.visible=false;
+enemybt.scale=5;
+function draw() 
+{
+  createEdgeSprites();
+  background("white");
+  if (keyDown("left"))
+{if(player.x>20)
+{
+  player.x=player.x-5;
+}
+if(gold.y>410)
+{
+  gold.x=randomNumber(10,350);
+  gold.y=-10;
+}
+}
+  if (keyDown("right"))
+{
+  if(player.x<380)
+  {
+   player.x=player.x+5; 
+  }
+}
+if(enemy.isTouching(rightEdge))
+{
+  enemy.velocityX=-5;
+}
+if(enemy.isTouching(leftEdge))
+{
+  enemy.velocityX=5;
+}
+if(keyWentDown("space"))
+{
+  bullet.x=player.x;
+  bullet.y=player.y-25;
+  bullet.velocityY=-5;
+}
+if(bullet.isTouching(enemy))
+{
+  score=score+1;
+  bullet.x=500;
+  bullet.y=player.y;
+}
+if(score>=10)
+{
+  back.setAnimation("desert_1");
+  enemybt.visible=true;
+  enemybt.velocityY=5;
+  if(enemybt.y>405)
+{
+  enemybt.x=enemy.x;
+  enemybt.y=enemy.y;
+}
+  if(enemybt.isTouching(player))
+{
+  life=life-1;
+  enemybt.x=enemy.x;
+  enemybt.y=enemy.y;
+}
+}
+if(life==0)
+{
+  enemy.destroy();
+  player.destroy();
+  bullet.destroy();
+  enemybt.destroy();
+  back.setAnimation("textGameOver_1");
+}
+  if(bullet.isTouching(gold))
+{
+  bullet.x=500;
+  bullet.y=player.y;
+  score=score+2;
+}
+if(score==20)
+{
+  enemy.setAnimation("enemyRed3_1");
+  enemy.velocityX=0;
+  back.setAnimation("textGameOver_1");
+}
+  drawSprites();
+  stroke("white");
+  strokeWeight(5);
+  textSize(15);
+  text(" Life reamaining "+life,0,100);
+  text(" Your score "+score,300,100);
+}
