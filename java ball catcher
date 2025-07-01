@@ -1,4 +1,21 @@
-// this is a food catcher game 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ // this is a food catcher game 
 var back = createSprite(200,200);
 
 back.setAnimation("cave_1");
